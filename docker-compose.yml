@@ -1,0 +1,30 @@
+version: '3.7'
+services:
+  app:
+    container_name: callmedia-app
+    build: .
+#    restart: always
+    depends_on:
+      - mariadb
+    command: php /var/www/html/app.php
+  rabbitmq:
+    container_name: callmedia-rabbitmq
+    image: 'bitnami/rabbitmq:latest'
+    environment:
+      - RABBITMQ_USERNAME=cmedia
+      - RABBITMQ_PASSWORD=password
+  mariadb:
+    container_name: callmedia-mariadb
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - '9906:3306'
+#  clickhouse:
+#    container_name: callmedia-clickhouse
+#    image: bitnami/clickhouse:latest
+#    environment:
+#      - ALLOW_EMPTY_PASSWORD=no
+#      - CLICKHOUSE_ADMIN_USER=admin
+#      - CLICKHOUSE_ADMIN_PASSWORD=password
